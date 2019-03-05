@@ -87,19 +87,22 @@ end
 
 # Creating superclass dog to hold extra service costs, that are the same across all dog sizes.
 class Dog
+    attr_accessor :gland_clean_selected, :dematting_shedding_selected, :paw_tidy_selected, :teeth_clean_selected, :specialty_shampoo_selected, :puppysitting_selected,  :puppysitting_cost
+    attr_reader :gland_clean_cost, :dematting_shedding_cost, :paw_tidy_cost, :teeth_clean_cost, :specialty_shampoo_cost
+
     def initialize
         @gland_clean_cost = 30
-        @gland_clean_tally = 0
+        @gland_clean_selected = false
         @dematting_shedding_cost = 15
-        @dematting_shedding_tally = 0
+        @dematting_shedding_selected = false
         @paw_tidy_cost = 5
-        @paw_tidy_tally = 0
+        @paw_tidy_selected = false
         @teeth_clean_cost = 10
-        @teeth_clean_tally = 0
+        @teeth_clean_selected = false
         @specialty_shampoo_cost = 15
-        @specialty_shampoo_tally = 0
+        @specialty_shampoo_selected = false
         @puppysitting_cost = 10
-        @puppysitting_tally = 0 
+        @puppysitting_selected = false 
     end
 end
 
@@ -245,9 +248,9 @@ class Services < UserData
     end
 
     def gland_clean
-        if @gland_clean_tally == 0
+        if @dog.gland_clean_selected == false
         @total_cost += @dog.gland_clean_cost
-        @gland_clean_tally += 1
+        @dog.gland_clean_selected = true
         else
             already_selected
             extras_case
@@ -255,9 +258,9 @@ class Services < UserData
     end
 
     def dematting_shedding
-        if @dematting_shedding_tally == 0
+        if @dog.dematting_shedding_selected == false
             @total_cost += @dog.dematting_shedding_cost
-            @dematting_shedding_tally += 1
+            @dog.dematting_shedding_selected = true
         else
             already_selected
             extras_case
@@ -265,9 +268,9 @@ class Services < UserData
     end
 
     def paw_tidy
-        if @paw_tidy_tally == 0
+        if @dog.paw_tidy_selected == false
             @total_cost += @dog.paw_tidy_cost
-            @paw_tidy_tally += 1
+            @dog.paw_tidy_selected = true
         else
             already_selected
             extras_case
@@ -275,9 +278,9 @@ class Services < UserData
     end
 
     def teeth_clean
-        if @teeth_clean_tally == 0
+        if @dog.teeth_clean_selected == false
             @total_cost += @dog.teeth_clean_cost
-            @teeth_clean_tally += 1
+            @dog.teeth_clean_selected = true
         else
             already_selected
             extras_case
@@ -285,9 +288,9 @@ class Services < UserData
     end
 
     def specialty_shampoo
-        if @specialty_shampoo_tally == 0
+        if @dog.specialty_shampoo_selected == false
             @total_cost += @dog.specialty_shampoo_cost
-            @specialty_shampoo_tally += 1
+            @dog.specialty_shampoo_selected = true
         else
             already_selected
             extras_case
@@ -295,9 +298,9 @@ class Services < UserData
     end
 
     def puppysitting
-        if @puppysitting_tally == 0
+        if @dog.puppysitting_selected == false
             @total_cost += @dog.puppysitting_cost
-            @puppysitting_tally += 1
+            @dog.puppysitting_tally = true
         else
             already_selected
             extras_case
@@ -318,7 +321,6 @@ class Services < UserData
 
 end
 
-user = UserData.new()
 services = Services.new()
 
 services.get_all_data
