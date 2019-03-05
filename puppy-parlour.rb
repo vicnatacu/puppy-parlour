@@ -169,10 +169,10 @@ class Services < UserData
         puts "Which service would you like?"
         puts "Select Service 1, 2, 3, 4, or 5:"
         puts "(New Year Special: If you select a service, puppysitting will only be $10, otherwise it will be $50)"
-        puts "1. Wash and Dry"
-        puts "2. Wash and Tidy"
-        puts "3. Full Groom"
-        puts "4. Style Cut"
+        puts "1. Wash and Dry ($#{@dog.wash_dry_cost})"
+        puts "2. Wash and Tidy ($#{@dog.wash_tidy_cost})"
+        puts "3. Full Groom ($#{@dog.full_groom_cost})"
+        puts "4. Style Cut ($#{@dog.style_cut_cost})"
         puts "5. None, I only want extras"
         @service_selected = gets.chomp.to_i
         case
@@ -225,7 +225,7 @@ class Services < UserData
 
     def already_selected
         puts "You have already selected that extra:"
-        puts "Would you like another extra?:"
+        puts "Would you like another extra? (y/n):"
             @extra_no = gets.chomp.to_i
     end
 
@@ -235,12 +235,12 @@ class Services < UserData
         @response = gets.chomp.downcase
         if @response == "yes" or @response == "y"
             puts "Please select from the following extras:"
-            puts "1. Gland Clean"
-            puts "2. De-matting/De-shedding"
-            puts "3. Paw Tidy"
-            puts "4. Teeth Clean"
-            puts "5. Specialty Shampoo"
-            puts "6. Puppy-sitting"
+            puts "1. Gland Clean ($#{@dog.gland_clean_cost})"
+            puts "2. De-matting/De-shedding ($#{@dog.dematting_shedding_cost})"
+            puts "3. Paw Tidy ($#{@dog.paw_tidy_cost})"
+            puts "4. Teeth Clean ($#{@dog.teeth_clean_cost})"
+            puts "5. Specialty Shampoo ($#{@dog.specialty_shampoo_cost})"
+            puts "6. Puppy-sitting ($#{@dog.puppysitting_cost})"
             @extra_no = gets.chomp.to_i
             extras_case
         elsif @response == "no" or @response == "n"
@@ -255,6 +255,7 @@ class Services < UserData
             already_selected
             extras_case
         end
+        add_extras
     end
 
     def dematting_shedding
@@ -265,6 +266,7 @@ class Services < UserData
             already_selected
             extras_case
         end
+        add_extras
     end
 
     def paw_tidy
@@ -275,6 +277,7 @@ class Services < UserData
             already_selected
             extras_case
         end
+        add_extras
     end
 
     def teeth_clean
@@ -285,6 +288,7 @@ class Services < UserData
             already_selected
             extras_case
         end
+        add_extras
     end
 
     def specialty_shampoo
@@ -295,16 +299,18 @@ class Services < UserData
             already_selected
             extras_case
         end
+        add_extras
     end
 
     def puppysitting
         if @dog.puppysitting_selected == false
             @total_cost += @dog.puppysitting_cost
-            @dog.puppysitting_tally = true
+            @dog.puppysitting_selected = true
         else
             already_selected
             extras_case
         end
+        add_extras
     end
 
     def another_dog
@@ -327,3 +333,4 @@ services.get_all_data
 services.which_service
 services.add_extras
 services.another_dog
+puts services.total_cost
