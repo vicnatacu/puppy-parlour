@@ -155,7 +155,7 @@ class ExtraLarge < DogPricing
 end
 
 class Services
-    attr_accessor :total_cost, :user_data, :time_for_service
+    attr_accessor :total_cost, :user_data, :time_for_service, :reselect_rebook
 
     def initialize()
         @user_data = UserData.new
@@ -164,16 +164,17 @@ class Services
         @response = ""
         @extra_no = 0
         @time_for_service = Time.now
+        @reselect_rebook = ""
     end
 
     def which_service
         puts "Which service would you like?"
         puts "Select Service 1, 2, 3, 4, or 5:"
         puts "(New Year Special: If you select a service, puppysitting will only be $10, otherwise it will be $50)"
-        puts "1. Wash and Dry ($#{@user_data.dog.wash_dry_cost})"
-        puts "2. Wash and Tidy ($#{@user_data.dog.wash_tidy_cost})"
-        puts "3. Full Groom ($#{@user_data.dog.full_groom_cost})"
-        puts "4. Style Cut ($#{@user_data.dog.style_cut_cost})"
+        puts "1. Wash and Dry ($#{@user_data.dog.wash_dry_cost} and will take 1 hour)"
+        puts "2. Wash and Tidy ($#{@user_data.dog.wash_tidy_cost} and will take 1.5 hours)"
+        puts "3. Full Groom ($#{@user_data.dog.full_groom_cost} and will take 3 hours)"
+        puts "4. Style Cut ($#{@user_data.dog.style_cut_cost} and will take 4 hours)"
         puts "5. None, I only want extras"
         @service_selected = gets.chomp.to_i
         case
@@ -188,6 +189,7 @@ class Services
         when @service_selected == 5
             @user_data.dog.puppysitting_cost = 50
         end
+        time_limitation
         puts "Your total cost is $#{@total_cost}"
     end
 
@@ -216,14 +218,15 @@ class Services
         @response = gets.chomp.downcase
         if @response == "yes" or @response == "y"
             puts "Please select from the following extras:"
-            puts "1. Gland Clean ($#{@user_data.dog.gland_clean_cost})"
-            puts "2. De-matting/De-shedding ($#{@user_data.dog.dematting_shedding_cost})"
-            puts "3. Paw Tidy ($#{@user_data.dog.paw_tidy_cost})"
-            puts "4. Teeth Clean ($#{@user_data.dog.teeth_clean_cost})"
-            puts "5. Specialty Shampoo ($#{@user_data.dog.specialty_shampoo_cost})"
-            puts "6. Puppy-sitting ($#{@user_data.dog.puppysitting_cost})"
+            puts "1. Gland Clean ($#{@user_data.dog.gland_clean_cost} and will take 15 minutes)"
+            puts "2. De-matting/De-shedding ($#{@user_data.dog.dematting_shedding_cost} and will take 30 minutes)"
+            puts "3. Paw Tidy ($#{@user_data.dog.paw_tidy_cost} and will take 15 minutes)"
+            puts "4. Teeth Clean ($#{@user_data.dog.teeth_clean_cost} and will take 10 minutes)"
+            puts "5. Specialty Shampoo ($#{@user_data.dog.specialty_shampoo_cost}, no extra time required)"
+            puts "6. Puppy-sitting ($#{@user_data.dog.puppysitting_cost} - if you won't be available at collection time)"
             @extra_no = gets.chomp.to_i
             extras_case
+            time_limitation
         elsif @response == "no" or @response == "n"
         end
     end
@@ -291,7 +294,7 @@ class Services
         if @user_data.dog.teeth_clean_selected == false
             @total_cost += @user_data.dog.teeth_clean_cost
             @user_data.dog.teeth_clean_selected = true
-            @time_for_service += 300
+            @time_for_service += 600
         else
             already_selected
             extras_case
@@ -334,16 +337,36 @@ class Services
         end   
     end
 
-    def collection_time
-        return "Your puppy will be ready for collection #{services.time_for_service.strftime("%I:%M %p")}"
+    # def collection_time
+    #     return "Your puppy will be ready for collection #{@services.time_for_service.strftime("%I:%M %p")}"
+    # end
+
+    def time_limitation
+        if @time_for_service > Time.local((Time.now.year), (Time.now.month), (Time.now.day), 17, 0, 0)
+            puts "This request does not fit into today's service schedule, choose a different service for today, or rebook for another day?:"
+            puts "1. Reselect services"
+            puts "2. Rebook"
+            @reselect_rebook = gets.chomp
+            if @reselect_rebook == "1"
+                @time_for_service = Time.now
+                which_service
+            elsif @reselect_rebook == "2"
+                puts "Please call us on 040404040 to schedule at our next available appointment"
+                exit
+            else
+                puts "Please select 1 or 2."
+                time_limitation
+            end
+        end 
     end
+
 end
 
 services = Services.new()
 
 services.user_data.get_all_data
 services.which_service
-services.collection_time
+services.add_extras
 # services.add_extras
 # services.another_dog
 # puts services.total_cost
