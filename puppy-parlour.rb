@@ -155,7 +155,7 @@ class ExtraLarge < DogPricing
 end
 
 class Services
-    attr_accessor :total_cost, :user_data
+    attr_accessor :total_cost, :user_data, :time_for_service
 
     def initialize()
         @user_data = UserData.new
@@ -163,6 +163,7 @@ class Services
         @service_selected = 0
         @response = ""
         @extra_no = 0
+        @time_for_service = Time.now
     end
 
     def which_service
@@ -192,18 +193,22 @@ class Services
 
     def wash_and_dry
         @total_cost += @user_data.dog.wash_dry_cost
+        @time_for_service += 3600
     end
 
     def wash_and_tidy
         @total_cost += @user_data.dog.wash_tidy_cost
+        @time_for_service += 5400
     end
 
     def full_groom
         @total_cost += @user_data.dog.full_groom_cost
+        @time_for_service += 10800
     end
 
     def style_cut
         @total_cost += @user_data.dog.style_cut_cost
+        @time_for_service += 14400
     end
 
     def add_extras
@@ -250,6 +255,7 @@ class Services
         if @user_data.dog.gland_clean_selected == false
         @total_cost += @user_data.dog.gland_clean_cost
         @user_data.dog.gland_clean_selected = true
+        @time_for_service += 900
         else
             already_selected
             extras_case
@@ -261,6 +267,7 @@ class Services
         if @user_data.dog.dematting_shedding_selected == false
             @total_cost += @user_data.dog.dematting_shedding_cost
             @user_data.dog.dematting_shedding_selected = true
+            @time_for_service += 1800
         else
             already_selected
             extras_case
@@ -272,6 +279,7 @@ class Services
         if @user_data.dog.paw_tidy_selected == false
             @total_cost += @user_data.dog.paw_tidy_cost
             @user_data.dog.paw_tidy_selected = true
+            @time_for_service += 900
         else
             already_selected
             extras_case
@@ -283,6 +291,7 @@ class Services
         if @user_data.dog.teeth_clean_selected == false
             @total_cost += @user_data.dog.teeth_clean_cost
             @user_data.dog.teeth_clean_selected = true
+            @time_for_service += 300
         else
             already_selected
             extras_case
@@ -290,6 +299,7 @@ class Services
         add_extras
     end
 
+    # Won't need addition to time_for_service counter as this service realistically would not add to total time for service
     def specialty_shampoo
         if @user_data.dog.specialty_shampoo_selected == false
             @total_cost += @user_data.dog.specialty_shampoo_cost
@@ -324,12 +334,16 @@ class Services
         end   
     end
 
+    def collection_time
+        return "Your puppy will be ready for collection #{services.time_for_service.strftime("%I:%M %p")}"
+    end
 end
 
 services = Services.new()
 
 services.user_data.get_all_data
 services.which_service
-services.add_extras
-services.another_dog
-puts services.total_cost
+services.collection_time
+# services.add_extras
+# services.another_dog
+# puts services.total_cost
