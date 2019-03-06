@@ -1,3 +1,5 @@
+require 'terminal-table'
+
 # Creating a class, that will store the data that we collect from the user
 class UserData
     attr_accessor :owner_name, :owner_contact, :location, :dog_name, :dog_breed, :dog_size, :dog
@@ -59,14 +61,14 @@ class UserData
     # dog_size_case creates an object of one of the four Dog subclasses; the Small subclass, Medium subclass, Large subclass or ExtraLarge subclass.
     # Object creation is dependent on user input from the get_dog_size instance method.
     def dog_size_case
-        case 
-        when @dog_size == "S"
+        case @dog_size
+        when "S"
             @dog = Small.new()
-        when @dog_size == "M"
+        when "M"
             @dog = Medium.new()
-        when @dog_size == "L"
+        when "L"
             @dog = Large.new()
-        when @dog_size == "XL"
+        when "XL"
             @dog = ExtraLarge.new()
         end
     end
@@ -156,6 +158,7 @@ end
 
 class Services
     attr_accessor :total_cost, :user_data, :time_for_service, :reselect_rebook
+    attr_reader :service_selected, :dog
 
     def initialize()
         @user_data = UserData.new
@@ -176,17 +179,18 @@ class Services
         puts "3. Full Groom ($#{@user_data.dog.full_groom_cost} and will take 3 hours)"
         puts "4. Style Cut ($#{@user_data.dog.style_cut_cost} and will take 4 hours)"
         puts "5. None, I only want extras"
+        puts "(DISCLAIMER: The condition of your dogs coat may alter the total cost for your service choice)"
         @service_selected = gets.chomp.to_i
-        case
-        when @service_selected == 1
+        case @service_selected
+        when 1
             wash_and_dry
-        when @service_selected == 2
+        when 2
             wash_and_tidy
-        when @service_selected == 3
+        when 3
             full_groom
-        when @service_selected == 4
+        when 4
             style_cut
-        when @service_selected == 5
+        when 5
             @user_data.dog.puppysitting_cost = 50
         end
         time_limitation
@@ -238,18 +242,18 @@ class Services
     end
 
     def extras_case
-        case
-        when @extra_no == 1
+        case @extra_no
+        when 1
             gland_clean
-        when @extra_no == 2
+        when 2
             dematting_shedding
-        when @extra_no == 3
+        when 3
             paw_tidy
-        when @extra_no == 4
+        when 4
             teeth_clean
-        when @extra_no == 5
+        when 5
             specialty_shampoo
-        when @extra_no == 6
+        when 6
             puppysitting
         end
     end
@@ -359,7 +363,6 @@ class Services
             end
         end 
     end
-
 end
 
 services = Services.new()
@@ -367,6 +370,96 @@ services = Services.new()
 services.user_data.get_all_data
 services.which_service
 services.add_extras
-# services.add_extras
 # services.another_dog
 # puts services.total_cost
+
+if services.user_data.dog.puppysitting_selected == false
+    puts "Your puppy will be ready at #{services.time_for_service.strftime("at %I:%M %p")}"
+    puts "Here is your invoice: "
+    invoice = Terminal::Table.new
+invoice.title = "Puppy Parlour Invoice"
+invoice.add_separator
+invoice << ["Owner Name", services.user_data.owner_name]
+invoice << ["Pet Name", services.user_data.dog_name]
+invoice.add_separator
+invoice << ["Service", "Cost"]
+invoice.add_separator
+case services.service_selected
+when 1
+    invoice << ["Wash and Dry", services.user_data.dog.wash_dry_cost]
+when 2
+    invoice << ["Wash and Tidy", services.user_data.dog.wash_tidy_cost] 
+when 3
+    invoice << ["Full Groom", services.user_data.dog.full_groom_cost]
+when 4
+    invoice << ["Style Cut", services.user_data.dog.style_cut_cost]
+end
+if services.user_data.dog.gland_clean_selected == true
+    invoice << ["Gland Clean", services.user_data.dog.gland_clean_cost]
+end
+if services.user_data.dog.dematting_shedding_selected == true
+    invoice << ["Dematting/Deshedding", services.user_data.dog.dematting_shedding_cost]
+end
+if services.user_data.dog.paw_tidy_selected == true
+    invoice << ["Paw Tidy", services.user_data.dog.paw_tidy_cost]
+end
+if services.user_data.dog.teeth_clean_selected == true
+    invoice << ["Teeth Clean", services.user_data.dog.teeth_clean_cost]
+end
+if services.user_data.dog.specialty_shampoo_selected == true
+    invoice << ["Specialty Shampoo", services.user_data.dog.specialty_shampoo_cost]
+end
+if services.user_data.dog.puppysitting_selected == true
+    invoice << ["Puppysitting", services.user_data.dog.puppysitting_cost]
+end
+invoice.add_separator
+invoice << ["Total", services.total_cost]
+print invoice
+elsif services.user_data.dog.puppysitting_selected == true
+    puts "Your puppy will be ready for collection between 5PM-6PM today. See you then!"
+    puts "Here is your invoice: "
+    invoice = Terminal::Table.new
+invoice.title = "Puppy Parlour Invoice"
+invoice.add_separator
+invoice << ["Owner Name", services.user_data.owner_name]
+invoice << ["Pet Name", services.user_data.dog_name]
+invoice.add_separator
+invoice << ["Service", "Cost"]
+invoice.add_separator
+case services.service_selected
+when 1
+    invoice << ["Wash and Dry", services.user_data.dog.wash_dry_cost]
+when 2
+    invoice << ["Wash and Tidy", services.user_data.dog.wash_tidy_cost] 
+when 3
+    invoice << ["Full Groom", services.user_data.dog.full_groom_cost]
+when 4
+    invoice << ["Style Cut", services.user_data.dog.style_cut_cost]
+end
+if services.user_data.dog.gland_clean_selected == true
+    invoice << ["Gland Clean", services.user_data.dog.gland_clean_cost]
+end
+if services.user_data.dog.dematting_shedding_selected == true
+    invoice << ["Dematting/Deshedding", services.user_data.dog.dematting_shedding_cost]
+end
+if services.user_data.dog.paw_tidy_selected == true
+    invoice << ["Paw Tidy", services.user_data.dog.paw_tidy_cost]
+end
+if services.user_data.dog.teeth_clean_selected == true
+    invoice << ["Teeth Clean", services.user_data.dog.teeth_clean_cost]
+end
+if services.user_data.dog.specialty_shampoo_selected == true
+    invoice << ["Specialty Shampoo", services.user_data.dog.specialty_shampoo_cost]
+end
+if services.user_data.dog.puppysitting_selected == true
+    invoice << ["Puppysitting", services.user_data.dog.puppysitting_cost]
+end
+invoice.add_separator
+invoice << ["Total", services.total_cost]
+print invoice
+end
+
+
+
+
+
