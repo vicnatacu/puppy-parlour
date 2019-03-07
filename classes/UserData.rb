@@ -1,8 +1,8 @@
-# Creating a class, that will store the data that we collect from the user
+# Creating a class UserData, that will store the data that we collect from the user
 class UserData
     attr_accessor :owner_name, :owner_contact, :location, :dog_name, :dog_breed, :dog_size, :dog
 
-    # Initialising all of the variables we need to collect and have access to
+    # Initialising all of the variables we need to collect and have access to (with attr_accessor: above)
     def initialize()
         @owner_name = ""
         @owner_contact = ""
@@ -45,6 +45,7 @@ class UserData
     end
 
     # Asking the user for the size of their dog, and enforcing certain string input (S, M, L, XL)
+    # We call dog_size_case to keep code dry
     def get_dog_size
         puts "Roughly, what size would you say that your dog is? (S, M, L, XL):"
         @dog_size = gets.chomp
@@ -71,6 +72,7 @@ class UserData
         end
     end
 
+    # An instance method to help create DRY code. Each method called within get_all_data collects certain user input as defined by their individual method
     def get_all_data
         get_location
         get_owner_name
@@ -78,6 +80,8 @@ class UserData
         get_dog_data
     end
 
+    # A slightly more specific instance method to create DRY code. Primarily used to collect only dog data, when the another_dog instance method is called
+    # within the Services class.
     def get_dog_data
         get_dog_name
         get_dog_breed
