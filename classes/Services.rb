@@ -95,6 +95,8 @@ class Services
 
     # This is instance method is setting up the input block for users to select extra services
     def add_extras
+        # Clearing the screen each time this method is called (as it is called regularly and multiple times in a row) to keep the terminal tidy
+        puts `clear`
         puts "Would you like any other extras services added to your booking today? (y/n):"
         # We downcase the response just to ensure that if the user inputs YES, Y, NO, or N that the if block still runs
         response = gets.chomp.downcase
@@ -118,11 +120,11 @@ class Services
         end
     end
 
-    # An instance method used to help keep our script DRY. If a user selecteds an extra that they have already selected, this will re-collect input
+    # An instance method used to help keep our script DRY. If a user selecteds an extra that they have already selected, it will let them know.
     def already_selected
-        puts "You have already selected that extra:"
-        puts "Would you like to select another extra? (y/n):"
-            @extra_no = gets.chomp.to_i
+        puts `clear`
+        puts "You have already selected that extra!"
+        puts
     end
 
     # This instance method contains our case statement for the different extra selection possibilities. This case statement appears in a few places, and
@@ -160,10 +162,9 @@ class Services
             # Incrementing the total time for service
             @time_for_service += 900
         # The else block should execute when the user has already selected this extra before, it will call already_selected which asks for the user
-        # to try again, if they did still wish to add an additional extra, and call the extras case again to parse their response.
+        # to try again, if they did still wish to add an additional extra.
         else
             already_selected
-            extras_case
         end
         # Calling add_extras again. Without this, the user would only be able to select one extra. This will ask them if they would like another.
         add_extras
@@ -177,7 +178,6 @@ class Services
             @time_for_service += 1800
         else
             already_selected
-            extras_case
         end
         add_extras
     end
@@ -190,7 +190,6 @@ class Services
             @time_for_service += 900
         else
             already_selected
-            extras_case
         end
         add_extras
     end
@@ -203,7 +202,6 @@ class Services
             @time_for_service += 600
         else
             already_selected
-            extras_case
         end
         add_extras
     end
@@ -217,7 +215,6 @@ class Services
             @user_data.dog.specialty_shampoo_selected = true
         else
             already_selected
-            extras_case
         end
         add_extras
     end
@@ -231,7 +228,6 @@ class Services
             @user_data.dog.puppysitting_selected = true
         else
             already_selected
-            extras_case
         end
         add_extras
     end
@@ -297,7 +293,8 @@ class Services
         # If the user has not selected puppysitting, this will print the collection time as the @time_for_service instance variable in a readable string
         # format
         if @user_data.dog.puppysitting_selected == false
-            puts "Your puppy will be ready at #{@time_for_service.strftime("at %I:%M %p")}"
+            puts "#{@user_data.dog_name} will be ready at #{@time_for_service.strftime("at %I:%M %p")}"
+            puts "If #{@user_data.dog_name} is ready before then we will call you on #{@user_data.owner_contact} "
             puts "Here is your invoice: "
             invoice = Terminal::Table.new
             invoice.title = "Puppy Parlour Invoice"
@@ -305,7 +302,7 @@ class Services
             invoice << ["Owner Name", @user_data.owner_name]
             invoice << ["Pet Name", @user_data.dog_name]
             invoice.add_separator
-            invoice << ["Service", "Cost"]
+            invoice << ["Service", "Cost ($)"]
             invoice.add_separator
             case @service_selected
             when 1
@@ -340,7 +337,7 @@ class Services
             print invoice
         # If the user has selected puppysitting, this will create an invoice and also inform the user of collection hours for their dog
         elsif @user_data.dog.puppysitting_selected == true
-            puts "Your puppy will be ready for collection between 5PM-6PM today. See you then!"
+            puts "#{@user_data.dog_name} will be ready for collection between 5PM-6PM today. See you then!"
             puts "Here is your invoice: "
             invoice = Terminal::Table.new
             invoice.title = "Puppy Parlour Invoice"
@@ -348,7 +345,7 @@ class Services
             invoice << ["Owner Name", @user_data.owner_name]
             invoice << ["Pet Name", @user_data.dog_name]
             invoice.add_separator
-            invoice << ["Service", "Cost"]
+            invoice << ["Service", "Cost ($)"]
             invoice.add_separator
             case service_selected
             when 1

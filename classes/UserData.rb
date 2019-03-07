@@ -18,15 +18,19 @@ class UserData
         puts "We have franchises at: Bulimba, South Brisbane City, and Paddington."
         puts "Which franchise would you like to make a booking at?:"
         @location = gets.chomp
+        until @location == "Bulimba" or @location == "South Brisbane City" or @location == "Paddington"
+            puts "Please select a valid franchise location:"
+            @location = gets.chomp
+        end
     end
 
     # Collecting the owner's name from user and and assigning to @owner_name
     def get_owner_name
         puts "What is your name?:"
-        @owner_name = gets.chomp.to_s
-    end
+        @owner_name = gets.chomp
 
     # Collecting owner's contact number from user and assigning to @owner_contact
+    # We used kept the 
     def get_owner_contact
         puts "What is your preferred contact number?:"
         @owner_contact = gets.chomp
@@ -75,16 +79,23 @@ class UserData
     # An instance method to help create DRY code. Each method called within get_all_data collects certain user input as defined by their individual method
     def get_all_data
         get_location
+        puts
         get_owner_name
+        puts
         get_owner_contact
+        puts `clear`
         get_dog_data
     end
 
     # A slightly more specific instance method to create DRY code. Primarily used to collect only dog data, when the another_dog instance method is called
     # within the Services class.
     def get_dog_data
+        puts
         get_dog_name
+        puts
         get_dog_breed
+        puts
         get_dog_size
+        puts
     end
 end
