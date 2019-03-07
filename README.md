@@ -54,11 +54,11 @@
     
     *Screenshots of Code in Use:*
 
-    ![image info](./docs/Code_Welcome.png)
-    ![image info](./docs/Code_Dog_Data_Input.png)
-    ![image info](./docs/Code_Service_Selection.png)
-    ![image info](./docs/Code_Extras_Selection.png)
-    ![image info](./docs/Code_Invoice.png)
+![image info](./docs/Code_Welcome.png)
+![image info](./docs/Code_Dog_Data_Input.png)
+![image info](./docs/Code_Service_Selection.png)
+![image info](./docs/Code_Extras_Selection.png)
+![image info](./docs/Code_Invoice.png)
 
 
 
@@ -66,15 +66,15 @@
 // Details of the design and planning
     Images showing our planning and brainstorming session:
 
-    ![image info](./docs/Brainstorming_1.jpg)
-    ![image info](./docs/Brainstorming_2.jpg)
-    ![image info](./docs/Brainstorming_3.jpg)
+![image info](./docs/Brainstorming_1.jpg)
+![image info](./docs/Brainstorming_2.jpg)
+![image info](./docs/Brainstorming_3.jpg)
 
     Flowcharts detailing flow of app processes (We had multiple iterations as our app was developed, they were updated to reflect this):
 
-    ![image info](./docs/Flow_Chart_v1.png)
-    ![image info](./docs/Flow_Chart_v2.png)
-    ![image info](./docs/Flow_Chart_v3.png)
+![image info](./docs/Flow_Chart_v1.png)
+![image info](./docs/Flow_Chart_v2.png)
+![image info](./docs/Flow_Chart_v3.png)
 
     Testing Spreadsheet iterations:
 
@@ -85,13 +85,13 @@
 
     Screenshots of Trello Board and its iterations:
 
-    ![image info](./docs/Trello_Start_of_Project.png)
-    ![image info](./docs/Trello_End_of_Day_1.png)
-    ![image info](./docs/Trello_Day_2_Morning.png)
-    ![image info](./docs/Trello_Day_2_After_Lunch.png)
-    ![image info](./docs/Trello_End_of_Project.png)
+![image info](./docs/Trello_Start_of_Project.png)
+![image info](./docs/Trello_End_of_Day_1.png)
+![image info](./docs/Trello_Day_2_Morning.png)
+![image info](./docs/Trello_Day_2_After_Lunch.png)
+![image info](./docs/Trello_End_of_Project.png)
 
     Evidence of Slack Conversations:
 
-    ![image info](./docs/Slack_Start_of_Project.png)
-    ![image info](./docs/Slack_End_of_Day_1.png)
+![image info](./docs/Slack_Start_of_Project.png)
+![image info](./docs/Slack_End_of_Day_1.png)
