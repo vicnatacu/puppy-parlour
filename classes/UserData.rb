@@ -28,6 +28,7 @@ class UserData
     def get_owner_name
         puts "What is your name?:"
         @owner_name = gets.chomp
+    end
 
     # Collecting owner's contact number from user and assigning to @owner_contact
     # We used kept the 
